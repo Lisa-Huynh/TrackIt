@@ -1,5 +1,7 @@
 package com.example.trackit.ui.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement.SpaceBetween
 import androidx.compose.material.*
@@ -20,6 +22,9 @@ import androidx.compose.ui.text.style.TextAlign
 import com.example.trackit.ui.theme.*
 import com.example.trackit.ui.viewmodels.WalletViewModel
 import com.example.trackit.util.Action
+import java.text.DateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 @Composable
@@ -28,9 +33,6 @@ fun HomeScreen(
     walletViewModel: WalletViewModel
 ) {
     val scaffoldState = rememberScaffoldState()
-
-    //val id: String by walletViewModel.id
-    //val accessToken: String by walletViewModel.accessToken
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -48,6 +50,7 @@ fun HomeScreen(
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreenTopBar() {
     TopAppBar(
@@ -65,11 +68,11 @@ fun HomeScreenTopBar() {
                 content = {
                     Column {
                         Text(
-                            text = "Lisa H.",
+                            text = "Hello!",
                             style = MaterialTheme.typography.h1
                         )
                         Text(
-                            text = "Dec. 11, 2022",
+                            text = LocalDate.now().format(DateTimeFormatter.ofPattern("MM dd")),
                             style = MaterialTheme.typography.h4
                         )
                     }

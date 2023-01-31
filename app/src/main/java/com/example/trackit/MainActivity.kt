@@ -1,6 +1,5 @@
 package com.example.trackit
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,6 +11,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
@@ -23,8 +24,10 @@ import androidx.navigation.compose.composable
 import com.example.trackit.navigation.ScreenNav
 import com.example.trackit.ui.BottomAppBar
 import com.example.trackit.ui.screens.HomeScreen
+import com.example.trackit.ui.screens.LoginScreen
 import com.example.trackit.ui.screens.WalletScreen
 import com.example.trackit.ui.theme.AppTheme
+import com.example.trackit.ui.viewmodels.LoginViewModel
 import com.example.trackit.ui.viewmodels.WalletViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,17 +37,24 @@ class MainActivity : ComponentActivity() {
     private lateinit var navController: NavHostController
     private lateinit var screenNav: ScreenNav
     private val walletViewModel: WalletViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             AppTheme {
                 navController = rememberNavController()
                 screenNav = ScreenNav(navController)
 
+                val loggedIn by loginViewModel.currentUser.observeAsState()
+
                 Scaffold(
                     bottomBar = {
-                        BottomAppBar(navController = navController)
+                        if (loggedIn != null) {
+                            BottomAppBar(navController = navController)
+                            screenNav.homeScreen
+                        }
                     }
                 ) { innerPadding ->
                     Surface(
@@ -55,7 +65,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         NavHost(
                             navController = navController,
-                            startDestination = "home screen"
+                            startDestination = "login screen"
                         ) {
                             composable(
                                 route = "home screen"
@@ -63,6 +73,14 @@ class MainActivity : ComponentActivity() {
                                 HomeScreen(
                                     navToWallet = screenNav.walletScreen,
                                     walletViewModel = walletViewModel
+                                )
+                            }
+
+                            composable(
+                                route = "login screen"
+                            ) {
+                                LoginScreen(
+                                    loginViewModel = loginViewModel
                                 )
                             }
 
