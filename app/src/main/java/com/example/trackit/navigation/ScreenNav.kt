@@ -15,11 +15,15 @@ class ScreenNav(navController: NavController) {
         }
     }
 
+//    val navigateTo: (Screens) -> Unit = {
+//        when (it) {
+//            Screens.HomeScreen -> navController.navigate(route = Screens.HomeScreen.toString())
+//        }
+//
+//    }
 }
 
 enum class Screens {
     HomeScreen,
-    WalletScreen,
-    AnalyticsScreen,
-    SettingsScreen
+    WalletScreen
 }

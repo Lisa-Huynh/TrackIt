@@ -31,7 +31,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    var uiState = mutableStateOf(LoginUiState())
+    var uiState = mutableStateOf(LoginUiState("", ""))
         private set
 
     fun onEmailChange(newEmail: String) {
@@ -42,15 +42,15 @@ class LoginViewModel @Inject constructor(
         uiState.value = uiState.value.copy(password = newPassword)
     }
 
-    fun onLoginClick(email: String, password: String) {
+    fun onLoginClick() {
         viewModelScope.launch {
-            authRepository.emailLogin(email, password)
+            authRepository.emailLogin(uiState.value.email, uiState.value.password)
         }
     }
 
-    fun onSignUpClick(email: String, password: String) {
+    fun onSignUpClick() {
         viewModelScope.launch {
-            authRepository.emailSignUp(email, password)
+            authRepository.emailSignUp(uiState.value.email, uiState.value.password)
         }
     }
 }

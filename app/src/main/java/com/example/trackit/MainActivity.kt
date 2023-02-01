@@ -1,10 +1,12 @@
 package com.example.trackit
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.DrawableRes
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,6 +29,7 @@ import com.example.trackit.ui.screens.HomeScreen
 import com.example.trackit.ui.screens.LoginScreen
 import com.example.trackit.ui.screens.WalletScreen
 import com.example.trackit.ui.theme.AppTheme
+import com.example.trackit.ui.viewmodels.HomeViewModel
 import com.example.trackit.ui.viewmodels.LoginViewModel
 import com.example.trackit.ui.viewmodels.WalletViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,9 +39,10 @@ class MainActivity : ComponentActivity() {
 
     private lateinit var navController: NavHostController
     private lateinit var screenNav: ScreenNav
-    private val walletViewModel: WalletViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
     private val loginViewModel: LoginViewModel by viewModels()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -72,7 +76,7 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 HomeScreen(
                                     navToWallet = screenNav.walletScreen,
-                                    walletViewModel = walletViewModel
+                                    homeViewModel = homeViewModel
                                 )
                             }
 

@@ -12,8 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
-import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.trackit.ui.theme.AppTheme
 import com.example.trackit.ui.viewmodels.LoginViewModel
 import com.example.trackit.util.LoginUiState
 
@@ -33,7 +35,10 @@ fun LoginScreen(
             {
                 LoginScreenContent(
                     uiState = uiState,
-                    viewModel = loginViewModel
+                    onEmailChange = loginViewModel::onEmailChange,
+                    onPasswordChange = loginViewModel::onPasswordChange,
+                    onLoginClick = loginViewModel::onLoginClick,
+                    onSignUpClick = loginViewModel::onSignUpClick,
                 )
             }
         }
@@ -43,7 +48,10 @@ fun LoginScreen(
 @Composable
 fun LoginScreenContent(
     uiState: LoginUiState,
-    viewModel: LoginViewModel
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onLoginClick: () -> Unit,
+    onSignUpClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -55,18 +63,18 @@ fun LoginScreenContent(
     ) {
         EmailField(
             value = uiState.email,
-            onValueChange = viewModel::onEmailChange)
+            onValueChange = onEmailChange)
         PasswordField(
             value = uiState.password,
-            onValueChange = viewModel::onPasswordChange)
+            onValueChange = onPasswordChange)
         Button(
-            onClick = { viewModel.onLoginClick(uiState.email, uiState.password) },
+            onClick = onLoginClick,
             content = {
                 Text(text = "Login")
             }
         )
         Button(
-            onClick = { viewModel.onSignUpClick(uiState.email, uiState.password) },
+            onClick = onSignUpClick,
             content = {
                 Text(text = "Sign Up")
             }
@@ -118,10 +126,16 @@ fun PasswordField(value: String, onValueChange: (String) -> Unit) {
     )
 }
 
-//@Preview
-//@Composable
-//fun LoginScreenPreview() {
-//    AppTheme {
-//        LoginScreen()
-//    }
-//}
+@Preview
+@Composable
+fun LoginScreenPreview() {
+    AppTheme {
+        LoginScreenContent(
+            uiState = LoginUiState(email = "", password = ""),
+            onEmailChange = { },
+            onPasswordChange = { },
+            onLoginClick = { },
+            onSignUpClick = { }
+        )
+    }
+}

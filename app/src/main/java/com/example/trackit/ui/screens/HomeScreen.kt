@@ -20,31 +20,39 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import com.example.trackit.ui.theme.*
+import com.example.trackit.ui.viewmodels.HomeViewModel
 import com.example.trackit.ui.viewmodels.WalletViewModel
 import com.example.trackit.util.Action
+import com.example.trackit.util.ProfileUiState
 import java.text.DateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     navToWallet: () -> Unit,
-    walletViewModel: WalletViewModel
+    homeViewModel: HomeViewModel
 ) {
+    val uiState by homeViewModel.uiState
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            HomeScreenTopBar()
+            HomeScreenTopBar(uiState.firstName)
         },
         content = { padding ->
             Column(
                 modifier = Modifier.padding(padding)
-            )
-            {
-                HomeScreenContent(viewModel = walletViewModel)
+            ) {
+                HomeScreenContent(
+                    uiState = uiState,
+                    onFirstNameChange = homeViewModel::onFirstNameChange,
+                    onLastNameChange = homeViewModel::onLastNameChange,
+                    onSubmitInfoClick = homeViewModel::onSubmitInfoClick
+                )
             }
         }
     )
@@ -52,7 +60,9 @@ fun HomeScreen(
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun HomeScreenTopBar() {
+fun HomeScreenTopBar(
+    name : String
+) {
     TopAppBar(
         modifier = Modifier
             .fillMaxWidth()
@@ -68,7 +78,7 @@ fun HomeScreenTopBar() {
                 content = {
                     Column {
                         Text(
-                            text = "Hello!",
+                            text = "Hello $name,",
                             style = MaterialTheme.typography.h1
                         )
                         Text(
@@ -79,11 +89,13 @@ fun HomeScreenTopBar() {
                     IconButton(
                         onClick = { /*TODO*/ },
                         content = {
-                            Icon(Icons.Rounded.AccountCircle,
+                            Icon(
+                                Icons.Rounded.AccountCircle,
                                 contentDescription = "User Profile",
                                 modifier = Modifier
                                     .height(60.dp)
-                                    .width(60.dp),)
+                                    .width(60.dp)
+                            )
                         }
                     )
                 }
@@ -94,14 +106,42 @@ fun HomeScreenTopBar() {
 
 
 @Composable
-fun HomeScreenContent(viewModel: WalletViewModel) {
+fun HomeScreenContent(
+    uiState : ProfileUiState,
+    onFirstNameChange: (String) -> Unit,
+    onLastNameChange: (String) -> Unit,
+    onSubmitInfoClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
             .padding(25.dp, 5.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
+
+        FirstNameField(
+            value = uiState.firstName,
+            onValueChange = onFirstNameChange)
+
+        LastNameField(
+            value = uiState.lastName,
+            onValueChange = onLastNameChange)
+
+        Button(
+            onClick = onSubmitInfoClick,
+            contentPadding = PaddingValues(60.dp, 10.dp),
+            content = {
+                Text(
+                    text = "Submit Information",
+                    style = MaterialTheme.typography.h1,
+                    textAlign = TextAlign.Center,
+                    color = Color.White
+                )
+            }
+        )
+
         Button(
             onClick = {
                 //viewModel.handleDatabaseAction(Action.ADD)
@@ -117,15 +157,47 @@ fun HomeScreenContent(viewModel: WalletViewModel) {
             }
         )
     }
+}
 
+@Composable
+fun FirstNameField(
+    value: String,
+    onValueChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = { onValueChange(it) },
+        label = { androidx.compose.material.Text(text = "First Name: ") },
+        placeholder = { androidx.compose.material.Text(text = "Enter your first name") },
+        singleLine = true,
+    )
+}
 
+@Composable
+fun LastNameField(
+    value: String,
+    onValueChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = { onValueChange(it) },
+        label = { androidx.compose.material.Text(text = "Last Name: ") },
+        placeholder = { androidx.compose.material.Text(text = "Enter your last name") },
+        singleLine = true,
+    )
 }
 
 
-//@Preview
-//@Composable
-//fun HomeScreenPreview() {
-//    AppTheme {
-//        HomeScreen {}
-//    }
-//}
+
+@Preview
+@Composable
+fun HomeScreenPreview() {
+    AppTheme {
+        HomeScreenContent(
+            uiState = ProfileUiState("Lisa", "Huynh"),
+            onFirstNameChange = { },
+            onLastNameChange = { },
+            onSubmitInfoClick = { }
+        )
+    }
+}

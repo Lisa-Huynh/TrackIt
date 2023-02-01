@@ -74,7 +74,8 @@ dependencies {
     // Firebase Authentication
     implementation 'com.google.firebase:firebase-auth-ktx'
 
-    // Firebase 
+    // Firebase Firestore
+    implementation 'com.google.firebase:firebase-firestore-ktx'
 
     //Room components
     implementation "androidx.room:room-runtime:2.3.0"

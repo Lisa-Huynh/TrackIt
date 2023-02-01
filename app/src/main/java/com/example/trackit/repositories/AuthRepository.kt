@@ -6,21 +6,27 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class AuthRepository @Inject constructor(
     private val accountService: AccountService
 ) {
     private val _userFlow = MutableSharedFlow<FirebaseUser?>()
-    fun getUser(): SharedFlow<FirebaseUser?> = _userFlow.asSharedFlow()
+    suspend fun getUser(): SharedFlow<FirebaseUser?> {
+        _userFlow.emit(Firebase.auth.currentUser)
+        return _userFlow.asSharedFlow()
+    }
 
     init {
         Firebase.auth.signOut()
     }
 
-    suspend fun emailLogin(email: String, password: String) {
+    suspend fun emailLogin(email: String, password: String): FirebaseUser? {
         if (accountService.authenticate(email, password)) {
-            _userFlow.emit(Firebase.auth.currentUser)
+            return Firebase.auth.currentUser
         }
+        return null
     }
 
     suspend fun emailSignUp(email: String, password: String) {
