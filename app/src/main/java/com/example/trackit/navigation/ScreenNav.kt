@@ -3,6 +3,12 @@ package com.example.trackit.navigation
 import androidx.navigation.NavController
 
 class ScreenNav(navController: NavController) {
+    val userInfoScreen: () -> Unit = {
+        navController.navigate(route = "user info screen") {
+            popUpTo("user info screen")
+        }
+    }
+
     val homeScreen: () -> Unit = {
         navController.navigate(route = "home screen") {
             popUpTo("home screen")
@@ -23,7 +29,9 @@ class ScreenNav(navController: NavController) {
 //    }
 }
 
-enum class Screens {
-    HomeScreen,
-    WalletScreen
+enum class BottomAppBarScreens {
+    HOME,
+    WALLET,
+    ANALYTICS,
+    SETTINGS,
 }

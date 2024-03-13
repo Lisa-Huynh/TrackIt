@@ -44,13 +44,16 @@ class LoginViewModel @Inject constructor(
 
     fun onLoginClick() {
         viewModelScope.launch {
-            authRepository.emailLogin(uiState.value.email, uiState.value.password)
+            //authRepository.emailLogin(uiState.value.email, uiState.value.password)
+            authRepository.emailLogin("lisa.huynh8789@gmail.com", "WhiteangeL8*")
         }
+        getUser()
     }
 
     fun onSignUpClick() {
         viewModelScope.launch {
             authRepository.emailSignUp(uiState.value.email, uiState.value.password)
         }
+        getUser()
     }
 }

@@ -21,6 +21,7 @@ import com.example.trackit.util.LoginUiState
 
 @Composable
 fun LoginScreen(
+    navToUserInfo: () -> Unit,
     loginViewModel: LoginViewModel
 ) {
     val uiState by loginViewModel.uiState
@@ -39,6 +40,7 @@ fun LoginScreen(
                     onPasswordChange = loginViewModel::onPasswordChange,
                     onLoginClick = loginViewModel::onLoginClick,
                     onSignUpClick = loginViewModel::onSignUpClick,
+                    navToUserInfo = navToUserInfo,
                 )
             }
         }
@@ -52,6 +54,7 @@ fun LoginScreenContent(
     onPasswordChange: (String) -> Unit,
     onLoginClick: () -> Unit,
     onSignUpClick: () -> Unit,
+    navToUserInfo: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -68,7 +71,10 @@ fun LoginScreenContent(
             value = uiState.password,
             onValueChange = onPasswordChange)
         Button(
-            onClick = onLoginClick,
+            onClick = {
+                onLoginClick.invoke()
+                navToUserInfo.invoke()
+            },
             content = {
                 Text(text = "Login")
             }
@@ -135,7 +141,8 @@ fun LoginScreenPreview() {
             onEmailChange = { },
             onPasswordChange = { },
             onLoginClick = { },
-            onSignUpClick = { }
+            onSignUpClick = { },
+            navToUserInfo = { }
         )
     }
 }
