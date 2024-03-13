@@ -1,4 +1,4 @@
-package com.example.trackit.data
+package com.example.trackit.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

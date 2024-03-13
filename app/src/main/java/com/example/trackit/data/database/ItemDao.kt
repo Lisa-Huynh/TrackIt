@@ -1,4 +1,4 @@
-package com.example.trackit.data
+package com.example.trackit.data.database
 
 import androidx.room.Dao
 import androidx.room.Delete

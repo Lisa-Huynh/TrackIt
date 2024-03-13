@@ -2,7 +2,7 @@ package com.example.trackit.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.trackit.data.ItemDatabase
+import com.example.trackit.data.database.ItemDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

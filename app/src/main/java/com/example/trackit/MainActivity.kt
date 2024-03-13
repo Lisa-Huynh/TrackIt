@@ -29,6 +29,7 @@ import com.example.trackit.ui.theme.AppTheme
 import com.example.trackit.ui.viewmodels.HomeViewModel
 import com.example.trackit.ui.viewmodels.LoginViewModel
 import com.example.trackit.ui.viewmodels.OnboardingViewModel
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -45,7 +46,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        var startDestination = ""
+        val auth = FirebaseAuth.getInstance()
+
         lifecycleScope.launch {
+            startDestination = if (auth.currentUser == null) "login screen" else "home screen"
             homeViewModel.currentProfile.collect { profile ->
                 if (profile != Profile("", "", "")) screenNav.homeScreen.invoke()
             }
@@ -73,7 +78,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         NavHost(
                             navController = navController,
-                            startDestination = "login screen"
+                            startDestination = startDestination
                         ) {
                             composable(
                                 route = "user info screen"
