@@ -8,7 +8,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 
 import kotlinx.coroutines.launch
 
@@ -21,7 +20,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            accountRepository.getProfile().collectLatest { profile -> _currentProfile.emit(profile) }
+            _currentProfile.emit(accountRepository.getProfile())
         }
     }
 }

@@ -46,11 +46,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var startDestination = ""
         val auth = FirebaseAuth.getInstance()
+        val startDestination = if (auth.currentUser == null) "login screen" else "user info screen"
 
         lifecycleScope.launch {
-            startDestination = if (auth.currentUser == null) "login screen" else "home screen"
             homeViewModel.currentProfile.collect { profile ->
                 if (profile != Profile("", "", "")) screenNav.homeScreen.invoke()
             }

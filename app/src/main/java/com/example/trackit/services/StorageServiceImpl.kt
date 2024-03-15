@@ -19,9 +19,8 @@ class StorageServiceImpl @Inject constructor(
                 "firstName" to profile.firstName
                 "lastName" to profile.lastName
             }).await()
-        } catch (_: Exception) {
-            Toast.makeText(applicationContext, "failed to add account.",
-                Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -29,9 +28,8 @@ class StorageServiceImpl @Inject constructor(
         return try {
             val reference = Firebase.firestore.collection("Accounts").document(accountId).get().await()
             reference.data?.let { fromMap(it) }
-        } catch (_: Exception) {
-            Toast.makeText(applicationContext, "failed to get account.",
-                Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
             null
         }
     }

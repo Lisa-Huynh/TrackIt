@@ -7,13 +7,18 @@ import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.first
 
 @Singleton
 class AccountRepository @Inject constructor(
     private val storageService: StorageService
 ) {
     private val _profileFlow = MutableSharedFlow<Profile>(replay = 1)
-    fun getProfile(): SharedFlow<Profile> = _profileFlow.asSharedFlow()
+    val profileFlow: SharedFlow<Profile> = _profileFlow.asSharedFlow()
+
+    suspend fun getProfile(): Profile {
+        return profileFlow.first()
+    }
 
     suspend fun addAccount(profile: Profile) {
         storageService.addAccount(profile)

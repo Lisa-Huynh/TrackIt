@@ -5,18 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trackit.data.models.Profile
 import com.example.trackit.repositories.AccountRepository
-import com.example.trackit.repositories.AuthRepository
 import com.example.trackit.util.ProfileUiState
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
-    private val accountRepository : AccountRepository,
-    private val authRepository: AuthRepository
+    private val accountRepository : AccountRepository
 ): ViewModel() {
     var uiState = mutableStateOf(ProfileUiState("", ""))
         private set
@@ -36,8 +33,8 @@ class OnboardingViewModel @Inject constructor(
     }
 
     private suspend fun submitInfo() {
-        authRepository.getUser().collectLatest { user ->
-            user?.uid?.let { userId ->
+        FirebaseAuth.getInstance().currentUser?.let { user ->
+            user.uid.let { userId ->
                 accountRepository.addAccount(
                     Profile(
                         id = userId,
