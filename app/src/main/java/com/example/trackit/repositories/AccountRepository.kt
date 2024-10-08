@@ -16,6 +16,10 @@ class AccountRepository @Inject constructor(
     private val _profileFlow = MutableSharedFlow<Profile>(replay = 1)
     val profileFlow: SharedFlow<Profile> = _profileFlow.asSharedFlow()
 
+    suspend fun populateProfile(accountId: String) {
+        storageService.getAccount(accountId)?.let { _profileFlow.emit(it) }
+    }
+
     suspend fun getProfile(): Profile {
         return profileFlow.first()
     }

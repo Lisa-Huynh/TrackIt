@@ -10,14 +10,14 @@ class ScreenNav(navController: NavController) {
     }
 
     val homeScreen: () -> Unit = {
-        navController.navigate(route = "home screen") {
-            popUpTo("home screen")
+        navController.navigate(route = BottomAppBarScreens.HOME.toString()) {
+            popUpTo(BottomAppBarScreens.HOME.toString())
         }
     }
 
     val walletScreen: () -> Unit = {
-        navController.navigate(route = "wallet screen") {
-            popUpTo("wallet screen")
+        navController.navigate(route = BottomAppBarScreens.WALLET.toString()) {
+            popUpTo(BottomAppBarScreens.WALLET.toString())
         }
     }
 
