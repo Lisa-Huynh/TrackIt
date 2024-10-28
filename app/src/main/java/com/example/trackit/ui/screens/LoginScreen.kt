@@ -14,6 +14,8 @@ import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trackit.ui.theme.AppTheme
 import com.example.trackit.ui.viewmodels.LoginViewModel
@@ -21,10 +23,9 @@ import com.example.trackit.util.LoginUiState
 
 @Composable
 fun LoginScreen(
-    navToUserInfo: () -> Unit,
-    loginViewModel: LoginViewModel
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
-    val uiState by loginViewModel.uiState
+    val uiState by viewModel.uiState
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
@@ -36,11 +37,7 @@ fun LoginScreen(
             {
                 LoginScreenContent(
                     uiState = uiState,
-                    onEmailChange = loginViewModel::onEmailChange,
-                    onPasswordChange = loginViewModel::onPasswordChange,
-                    onLoginClick = loginViewModel::onLoginClick,
-                    onSignUpClick = loginViewModel::onSignUpClick,
-                    navToUserInfo = navToUserInfo,
+                    viewModel = viewModel,
                 )
             }
         }
@@ -50,11 +47,7 @@ fun LoginScreen(
 @Composable
 fun LoginScreenContent(
     uiState: LoginUiState,
-    onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
-    onLoginClick: () -> Unit,
-    onSignUpClick: () -> Unit,
-    navToUserInfo: () -> Unit,
+    viewModel: LoginViewModel,
 ) {
     Column(
         modifier = Modifier
@@ -66,24 +59,19 @@ fun LoginScreenContent(
     ) {
         EmailField(
             value = uiState.email,
-            onValueChange = onEmailChange)
+            onValueChange = { viewModel.onEmailChange(uiState.email) },
+        )
         PasswordField(
             value = uiState.password,
-            onValueChange = onPasswordChange)
-        Button(
-            onClick = {
-                onLoginClick.invoke()
-                navToUserInfo.invoke()
-            },
-            content = {
-                Text(text = "Login")
-            }
+            onValueChange = { viewModel.onPasswordChange(uiState.password) },
         )
         Button(
-            onClick = onSignUpClick,
-            content = {
-                Text(text = "Sign Up")
-            }
+            onClick = { viewModel.onLoginClick() },
+            content = { Text(text = "Login") },
+        )
+        Button(
+            onClick = { viewModel.onSignUpClick() },
+            content = { Text(text = "Sign Up") },
         )
     }
 }
@@ -138,11 +126,7 @@ fun LoginScreenPreview() {
     AppTheme {
         LoginScreenContent(
             uiState = LoginUiState(email = "", password = ""),
-            onEmailChange = { },
-            onPasswordChange = { },
-            onLoginClick = { },
-            onSignUpClick = { },
-            navToUserInfo = { }
+            viewModel = LoginViewModel(),
         )
     }
 }

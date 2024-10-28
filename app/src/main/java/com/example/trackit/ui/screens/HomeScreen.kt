@@ -16,16 +16,13 @@ import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.trackit.ui.theme.*
 import com.example.trackit.ui.viewmodels.HomeViewModel
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
-    navToWallet: () -> Unit,
-    homeViewModel: HomeViewModel
+    homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     val scaffoldState = rememberScaffoldState()
     val currentProfile by homeViewModel.currentProfile.collectAsState()
@@ -43,7 +40,6 @@ fun HomeScreen(
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreenTopBar(
     name : String
@@ -67,7 +63,7 @@ fun HomeScreenTopBar(
                             style = MaterialTheme.typography.h1
                         )
                         Text(
-                            text = LocalDate.now().format(DateTimeFormatter.ofPattern("MM dd")),
+                            text = "MM dd",
                             style = MaterialTheme.typography.h4
                         )
                     }

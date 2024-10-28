@@ -12,14 +12,13 @@ class AuthRepository @Inject constructor(
     private val accountService: AccountService
 ) {
     private val auth = FirebaseAuth.getInstance()
-    private val _userFlow = MutableSharedFlow<FirebaseUser?>()
 
+    private val _userFlow = MutableSharedFlow<FirebaseUser?>()
     val userFlow: SharedFlow<FirebaseUser?>
         get() = _userFlow
 
-    suspend fun getUser(): SharedFlow<FirebaseUser?> {
-        _userFlow.emit(auth.currentUser)
-        return _userFlow.asSharedFlow()
+    fun getUser(): FirebaseUser? {
+        return auth.currentUser
     }
 
 //    init {

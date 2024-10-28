@@ -1,10 +1,9 @@
 package com.example.trackit.ui.viewmodels
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.trackit.navigation.ScreenNav
 import com.example.trackit.repositories.AuthRepository
 import com.example.trackit.util.LoginUiState
 import com.google.firebase.auth.FirebaseUser
@@ -12,22 +11,30 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.mapLatest
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
 ): ViewModel() {
-    private val _currentUser = MutableLiveData<FirebaseUser?>()
-    val currentUser: LiveData<FirebaseUser?>
+    private val _currentUser = MutableSharedFlow<FirebaseUser?>()
+    val currentUser: SharedFlow<FirebaseUser?>
         get() = _currentUser
 
     init {
         getUser()
+        currentUser.mapLatest { user ->
+            if (user != null) {
+                screenNav.userInfoScreen.invoke()
+            }
+        }
     }
 
     private fun getUser(){
         viewModelScope.launch {
-            authRepository.getUser().collectLatest { user -> _currentUser.value = user }
+            authRepository.getUser().collectLatest { user -> _currentUser.emit(user) }
         }
     }
 
@@ -44,13 +51,13 @@ class LoginViewModel @Inject constructor(
 
     fun onLoginClick() {
         viewModelScope.launch {
-            _currentUser.value = authRepository.emailLogin(uiState.value.email, uiState.value.password)
+            _currentUser.emit(authRepository.emailLogin(uiState.value.email, uiState.value.password))
         }
     }
 
     fun onSignUpClick() {
         viewModelScope.launch {
-            _currentUser.value = authRepository.emailSignUp(uiState.value.email, uiState.value.password)
+            _currentUser.emit(authRepository.emailSignUp(uiState.value.email, uiState.value.password))
         }
     }
 }

@@ -21,7 +21,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.trackit.R
 import com.example.trackit.isTrue
-import com.example.trackit.navigation.BottomAppBarScreens
 import com.example.trackit.ui.theme.bottomAppBarBackgroundColor
 import com.example.trackit.ui.theme.bottomAppBarContentColor
 
