@@ -4,6 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trackit.data.models.Profile
+import com.example.trackit.navigation.Navigator
+import com.example.trackit.navigation.Route
 import com.example.trackit.repositories.AccountRepository
 import com.example.trackit.util.ProfileUiState
 import com.google.firebase.auth.FirebaseAuth
@@ -12,7 +14,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class OnboardingViewModel @Inject constructor(
+class UserInfoViewModel @Inject constructor(
     private val accountRepository : AccountRepository
 ): ViewModel() {
     var uiState = mutableStateOf(ProfileUiState("", ""))
@@ -28,20 +30,17 @@ class OnboardingViewModel @Inject constructor(
 
     fun onSubmitInfoClick() {
         viewModelScope.launch {
-            submitInfo()
-        }
-    }
-
-    private suspend fun submitInfo() {
-        FirebaseAuth.getInstance().currentUser?.let { user ->
-            user.uid.let { userId ->
-                accountRepository.addAccount(
-                    Profile(
-                        id = userId,
-                        firstName = uiState.value.firstName,
-                        lastName = uiState.value.lastName
+            FirebaseAuth.getInstance().currentUser?.let { user ->
+                user.uid.let { userId ->
+                    accountRepository.addAccount(
+                        Profile(
+                            id = userId,
+                            firstName = uiState.value.firstName,
+                            lastName = uiState.value.lastName
+                        )
                     )
-                )
+                    Navigator.goTo(Route.Home)
+                }
             }
         }
     }

@@ -36,37 +36,37 @@ fun BottomAppBar(
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
-        BottomAppBarScreens.entries.forEach { screen ->
-            BottomNavigationItem(
-                selected = currentDestination?.hierarchy?.any {
-                    it.route == screen.name
-                }.isTrue(),
-                onClick = {
-                    navController.navigate(screen.name) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
-                        }
-                    }
-                },
-                icon = {
-                    val drawableId = when (screen) {
-                        BottomAppBarScreens.WALLET -> R.drawable.ic_card
-                        BottomAppBarScreens.ANALYTICS -> R.drawable.ic_bar_chart
-                        else -> null
-                    }
-                    val image = when (screen) {
-                        BottomAppBarScreens.HOME -> Icons.Rounded.Home
-                        BottomAppBarScreens.SETTINGS -> Icons.Rounded.Settings
-                        else -> null
-                    }
-                    NavBarIcon(
-                        drawableId = drawableId,
-                        icon = image,
-                        description = screen.name
-                    )
-                }
-            )
-        }
+//        BottomAppBarScreens.entries.forEach { screen ->
+//            BottomNavigationItem(
+//                selected = currentDestination?.hierarchy?.any {
+//                    it.route == screen.name
+//                }.isTrue(),
+//                onClick = {
+//                    navController.navigate(screen.name) {
+//                        popUpTo(navController.graph.findStartDestination().id) {
+//                            saveState = true
+//                        }
+//                    }
+//                },
+//                icon = {
+//                    val drawableId = when (screen) {
+//                        BottomAppBarScreens.WALLET -> R.drawable.ic_card
+//                        BottomAppBarScreens.ANALYTICS -> R.drawable.ic_bar_chart
+//                        else -> null
+//                    }
+//                    val image = when (screen) {
+//                        BottomAppBarScreens.HOME -> Icons.Rounded.Home
+//                        BottomAppBarScreens.SETTINGS -> Icons.Rounded.Settings
+//                        else -> null
+//                    }
+//                    NavBarIcon(
+//                        drawableId = drawableId,
+//                        icon = image,
+//                        description = screen.name
+//                    )
+//                }
+//            )
+//        }
     }
 }
 

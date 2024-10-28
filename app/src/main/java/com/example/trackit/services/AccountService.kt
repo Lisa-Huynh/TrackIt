@@ -1,7 +1,9 @@
 package com.example.trackit.services
 
-interface AccountService {
-    suspend fun authenticate(email: String, password: String): Boolean
+import com.google.firebase.auth.AuthResult
 
-    suspend fun signUp(email: String, password: String): Boolean
+interface AccountService {
+    suspend fun authenticate(email: String, password: String): AuthResult?
+
+    suspend fun signUp(email: String, password: String): AuthResult?
 }

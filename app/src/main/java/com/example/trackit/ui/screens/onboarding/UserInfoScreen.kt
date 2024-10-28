@@ -1,7 +1,5 @@
 package com.example.trackit.ui.screens.onboarding
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,16 +20,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.trackit.ui.theme.AppTheme
-import com.example.trackit.ui.viewmodels.OnboardingViewModel
+import com.example.trackit.ui.viewmodels.UserInfoViewModel
 import com.example.trackit.util.ProfileUiState
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun UserInfoScreen (
-    onboardingViewModel: OnboardingViewModel
+    userInfoViewModel: UserInfoViewModel = hiltViewModel(),
 ) {
-    val uiState by onboardingViewModel.uiState
+    val uiState by userInfoViewModel.uiState
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
@@ -42,9 +40,9 @@ fun UserInfoScreen (
             ) {
                 UserInfoScreenContent(
                     uiState = uiState,
-                    onFirstNameChange = onboardingViewModel::onFirstNameChange,
-                    onLastNameChange = onboardingViewModel::onLastNameChange,
-                    onSubmitInfoClick = onboardingViewModel::onSubmitInfoClick
+                    onFirstNameChange = { userInfoViewModel.onFirstNameChange(uiState.firstName) },
+                    onLastNameChange = { userInfoViewModel.onLastNameChange(uiState.lastName) },
+                    onSubmitInfoClick = { userInfoViewModel.onSubmitInfoClick() },
                 )
             }
         }

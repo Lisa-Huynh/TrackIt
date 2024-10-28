@@ -18,7 +18,8 @@ import androidx.navigation.compose.composable
 import com.example.trackit.navigation.NavController
 import com.example.trackit.navigation.Route
 import com.example.trackit.ui.screens.HomeScreen
-import com.example.trackit.ui.screens.LoginScreen
+import com.example.trackit.ui.screens.onboarding.LoginScreen
+import com.example.trackit.ui.screens.onboarding.UserInfoScreen
 import com.example.trackit.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -72,6 +73,9 @@ class MainActivity : ComponentActivity() {
                                 LoginScreen()
                             }
 
+                            composable<Route.UserInfo> {
+                                UserInfoScreen()
+                            }
                         }
                     }
                 }

@@ -13,31 +13,15 @@ class AuthRepository @Inject constructor(
 ) {
     private val auth = FirebaseAuth.getInstance()
 
-    private val _userFlow = MutableSharedFlow<FirebaseUser?>()
-    val userFlow: SharedFlow<FirebaseUser?>
-        get() = _userFlow
-
     fun getUser(): FirebaseUser? {
         return auth.currentUser
     }
 
-//    init {
-//        Firebase.auth.signOut()
-//    }
-
     suspend fun emailLogin(email: String, password: String): FirebaseUser? {
-        if (accountService.authenticate(email, password)) {
-            _userFlow.emit(auth.currentUser)
-            return auth.currentUser
-        }
-        return null
+        return accountService.authenticate(email, password)?.user
     }
 
     suspend fun emailSignUp(email: String, password: String): FirebaseUser? {
-        if (accountService.signUp(email, password)) {
-            _userFlow.emit(auth.currentUser)
-            return auth.currentUser
-        }
-        return null
+        return accountService.signUp(email, password)?.user
     }
 }

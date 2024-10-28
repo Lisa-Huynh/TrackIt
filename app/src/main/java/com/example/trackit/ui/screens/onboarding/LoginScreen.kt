@@ -1,4 +1,4 @@
-package com.example.trackit.ui.screens
+package com.example.trackit.ui.screens.onboarding
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -15,8 +15,6 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.trackit.ui.theme.AppTheme
 import com.example.trackit.ui.viewmodels.LoginViewModel
 import com.example.trackit.util.LoginUiState
@@ -37,7 +35,10 @@ fun LoginScreen(
             {
                 LoginScreenContent(
                     uiState = uiState,
-                    viewModel = viewModel,
+                    onEmailChange = { viewModel.onEmailChange(uiState.email) },
+                    onPasswordChange = { viewModel.onPasswordChange(uiState.password) },
+                    onLoginClick = { viewModel.onLoginClick() },
+                    onSignUpClick = { viewModel.onSignUpClick() },
                 )
             }
         }
@@ -47,7 +48,10 @@ fun LoginScreen(
 @Composable
 fun LoginScreenContent(
     uiState: LoginUiState,
-    viewModel: LoginViewModel,
+    onEmailChange: (String) -> Unit ,
+    onPasswordChange: (String) -> Unit ,
+    onLoginClick: () -> Unit ,
+    onSignUpClick: () -> Unit ,
 ) {
     Column(
         modifier = Modifier
@@ -59,18 +63,18 @@ fun LoginScreenContent(
     ) {
         EmailField(
             value = uiState.email,
-            onValueChange = { viewModel.onEmailChange(uiState.email) },
+            onValueChange = { onEmailChange(uiState.email) },
         )
         PasswordField(
             value = uiState.password,
-            onValueChange = { viewModel.onPasswordChange(uiState.password) },
+            onValueChange = { onPasswordChange(uiState.password) },
         )
         Button(
-            onClick = { viewModel.onLoginClick() },
+            onClick = { onLoginClick() },
             content = { Text(text = "Login") },
         )
         Button(
-            onClick = { viewModel.onSignUpClick() },
+            onClick = { onSignUpClick() },
             content = { Text(text = "Sign Up") },
         )
     }
@@ -126,7 +130,10 @@ fun LoginScreenPreview() {
     AppTheme {
         LoginScreenContent(
             uiState = LoginUiState(email = "", password = ""),
-            viewModel = LoginViewModel(),
+            onEmailChange = {},
+            onPasswordChange = {},
+            onLoginClick = {},
+            onSignUpClick = {},
         )
     }
 }
