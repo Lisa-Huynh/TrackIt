@@ -25,11 +25,11 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     val scaffoldState = rememberScaffoldState()
-    val currentProfile by homeViewModel.currentProfile.collectAsState()
+    //val currentProfile by homeViewModel.currentProfile.collectAsState()
 
     Scaffold(
         scaffoldState = scaffoldState,
-        topBar = { HomeScreenTopBar(name = currentProfile.firstName) },
+        //topBar = { HomeScreenTopBar(name = currentProfile.firstName) },
         content = { padding ->
             Column(
                 modifier = Modifier.padding(padding)

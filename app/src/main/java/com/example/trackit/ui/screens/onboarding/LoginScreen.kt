@@ -6,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,7 +24,7 @@ import com.example.trackit.util.LoginUiState
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState
+    val uiState by viewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
@@ -35,10 +36,10 @@ fun LoginScreen(
             {
                 LoginScreenContent(
                     uiState = uiState,
-                    onEmailChange = { viewModel.onEmailChange(uiState.email) },
-                    onPasswordChange = { viewModel.onPasswordChange(uiState.password) },
-                    onLoginClick = { viewModel.onLoginClick() },
-                    onSignUpClick = { viewModel.onSignUpClick() },
+                    onEmailChange = viewModel::onEmailChange,
+                    onPasswordChange = viewModel::onPasswordChange,
+                    onLoginClick = viewModel::onLoginClick,
+                    onSignUpClick = viewModel::onSignUpClick,
                 )
             }
         }
@@ -63,11 +64,11 @@ fun LoginScreenContent(
     ) {
         EmailField(
             value = uiState.email,
-            onValueChange = { onEmailChange(uiState.email) },
+            onValueChange = onEmailChange,
         )
         PasswordField(
             value = uiState.password,
-            onValueChange = { onPasswordChange(uiState.password) },
+            onValueChange = onPasswordChange,
         )
         Button(
             onClick = { onLoginClick() },

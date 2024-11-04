@@ -11,6 +11,8 @@ import com.example.trackit.util.LoginUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -18,15 +20,19 @@ class LoginViewModel @Inject constructor(
     private val accountRepository : AccountRepository,
 ): ViewModel() {
 
-    var uiState = mutableStateOf(LoginUiState("", ""))
-        private set
+    private val _uiState = MutableStateFlow(LoginUiState("bbb", ""))
+    val uiState = _uiState.asStateFlow()
 
     fun onEmailChange(newEmail: String) {
-        uiState.value = uiState.value.copy(email = newEmail)
+        viewModelScope.launch {
+            _uiState.emit(LoginUiState(newEmail, uiState.value.password))
+        }
     }
 
     fun onPasswordChange(newPassword: String) {
-        uiState.value = uiState.value.copy(password = newPassword)
+        viewModelScope.launch {
+            _uiState.emit(LoginUiState(uiState.value.email, newPassword))
+        }
     }
 
     fun onLoginClick() {

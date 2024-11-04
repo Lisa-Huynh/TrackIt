@@ -14,12 +14,12 @@ class HomeViewModel @Inject constructor(
     private val accountRepository : AccountRepository,
 ): ViewModel() {
 
-    lateinit var profile: Profile
+    private lateinit var profile: Profile
 
     init {
         viewModelScope.launch {
             val accountId = FirebaseAuth.getInstance().currentUser?.uid!!
-            profile = accountRepository.getProfile(accountId)
+            accountRepository.getProfile(accountId)?.let { profile = it }
         }
     }
 }
