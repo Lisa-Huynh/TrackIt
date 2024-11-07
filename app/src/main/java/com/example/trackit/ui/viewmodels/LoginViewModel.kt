@@ -1,8 +1,8 @@
 package com.example.trackit.ui.viewmodels
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.trackit.data.models.Profile
 import com.example.trackit.navigation.Navigator
 import com.example.trackit.navigation.Route
 import com.example.trackit.repositories.AccountRepository
@@ -20,7 +20,7 @@ class LoginViewModel @Inject constructor(
     private val accountRepository : AccountRepository,
 ): ViewModel() {
 
-    private val _uiState = MutableStateFlow(LoginUiState("bbb", ""))
+    private val _uiState = MutableStateFlow(LoginUiState("", ""))
     val uiState = _uiState.asStateFlow()
 
     fun onEmailChange(newEmail: String) {
@@ -39,7 +39,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             val user = authRepository.emailLogin(uiState.value.email, uiState.value.password)
             if (user != null) {
-                if (accountRepository.getProfile(user.uid) == null) {
+                if (accountRepository.getProfile(user.uid) is Profile.Blank) {
                     Navigator.goTo(Route.UserInfo)
                 } else {
                     Navigator.goTo(Route.Home)

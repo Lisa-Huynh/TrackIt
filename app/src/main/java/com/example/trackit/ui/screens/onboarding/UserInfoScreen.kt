@@ -13,6 +13,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +30,7 @@ import com.example.trackit.util.ProfileUiState
 fun UserInfoScreen (
     userInfoViewModel: UserInfoViewModel = hiltViewModel(),
 ) {
-    val uiState by userInfoViewModel.uiState
+    val uiState by userInfoViewModel.uiState.collectAsState()
     val scaffoldState = rememberScaffoldState()
 
     Scaffold(
@@ -40,9 +41,9 @@ fun UserInfoScreen (
             ) {
                 UserInfoScreenContent(
                     uiState = uiState,
-                    onFirstNameChange = { userInfoViewModel.onFirstNameChange(uiState.firstName) },
-                    onLastNameChange = { userInfoViewModel.onLastNameChange(uiState.lastName) },
-                    onSubmitInfoClick = { userInfoViewModel.onSubmitInfoClick() },
+                    onFirstNameChange = userInfoViewModel::onFirstNameChange,
+                    onLastNameChange = userInfoViewModel::onLastNameChange,
+                    onSubmitInfoClick = userInfoViewModel::onSubmitInfoClick,
                 )
             }
         }
@@ -70,11 +71,13 @@ fun UserInfoScreenContent(
 
         FirstNameField(
             value = uiState.firstName,
-            onValueChange = onFirstNameChange)
+            onValueChange = onFirstNameChange,
+        )
 
         LastNameField(
             value = uiState.lastName,
-            onValueChange = onLastNameChange)
+            onValueChange = onLastNameChange,
+        )
 
         Button(
             modifier = Modifier.padding(top = 20.dp),
@@ -87,7 +90,7 @@ fun UserInfoScreenContent(
                     textAlign = TextAlign.Center,
                     color = Color.White
                 )
-            }
+            },
         )
 
 //        Button(
@@ -143,9 +146,9 @@ fun UserInfoScreenPreview() {
     AppTheme {
         UserInfoScreenContent(
             uiState = ProfileUiState("Lisa", "Huynh"),
-            onFirstNameChange = { },
-            onLastNameChange = { },
-            onSubmitInfoClick = { }
+            onFirstNameChange = {},
+            onLastNameChange = {},
+            onSubmitInfoClick = {}
         )
     }
 }

@@ -6,6 +6,7 @@ import com.example.trackit.navigation.NavController
 import com.example.trackit.navigation.Navigator
 import com.example.trackit.navigation.Route
 import com.example.trackit.repositories.AuthRepository
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,12 +25,15 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            Navigator.navigationStream.collectLatest {
-                _navigationStream.update { it }
+            Navigator.navigationStream.collectLatest { navController ->
+                _navigationStream.update { navController }
             }
         }
         viewModelScope.launch {
-            authRepository.getUser()?.let { Navigator.goTo(route = Route.Home) }
+            authRepository.getUser()?.let {
+                //FirebaseAuth.getInstance().signOut()
+                Navigator.goTo(Route.Home)
+            }
         }
     }
 

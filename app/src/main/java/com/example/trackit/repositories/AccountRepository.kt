@@ -10,11 +10,11 @@ class AccountRepository @Inject constructor(
     private val storageService: StorageService
 ) {
 
-    suspend fun getProfile(accountId: String): Profile? {
+    suspend fun getProfile(accountId: String): Profile {
         return storageService.getAccount(accountId)
     }
 
-    suspend fun addAccount(profile: Profile) {
+    suspend fun addAccount(profile: Profile.Loaded) {
         storageService.addAccount(profile)
     }
 }

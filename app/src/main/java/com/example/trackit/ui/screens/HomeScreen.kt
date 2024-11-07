@@ -17,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.trackit.data.models.Profile
 import com.example.trackit.ui.theme.*
 import com.example.trackit.ui.viewmodels.HomeViewModel
 
@@ -25,11 +26,15 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
     val scaffoldState = rememberScaffoldState()
-    //val currentProfile by homeViewModel.currentProfile.collectAsState()
+    val profile by homeViewModel.profileStream.collectAsState()
 
     Scaffold(
         scaffoldState = scaffoldState,
-        //topBar = { HomeScreenTopBar(name = currentProfile.firstName) },
+        topBar = {
+            HomeScreenTopBar(
+                name = (profile as? Profile.Loaded)?.firstName ?: ""
+            )
+        },
         content = { padding ->
             Column(
                 modifier = Modifier.padding(padding)

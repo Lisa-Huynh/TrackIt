@@ -13,24 +13,31 @@ import javax.inject.Inject
 class StorageServiceImpl @Inject constructor(
     @ApplicationContext val applicationContext: Context
 ): StorageService {
-    override suspend fun addAccount(profile: Profile) {
+    override suspend fun addAccount(profile: Profile.Loaded) {
         try {
             Firebase.firestore.collection("Accounts").document(profile.id).set({
                 "firstName" to profile.firstName
                 "lastName" to profile.lastName
             }).await()
+//            val reference = Firebase.firestore.collection("Accounts").document(profile.id).get().await()
+//            val temp = reference.get("firstName").toString()
+//            temp
         } catch (e: Exception) {
             Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
         }
     }
 
-    override suspend fun getAccount(accountId: String): Profile? {
+    override suspend fun getAccount(accountId: String): Profile {
         return try {
             val reference = Firebase.firestore.collection("Accounts").document(accountId).get().await()
-            reference.data?.let { fromMap(it) }
+            if (reference.get("firstName").toString() == "null") {
+                Profile.Blank
+            } else {
+                fromMap(reference.data!!)
+            }
         } catch (e: Exception) {
             Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
-            null
+            Profile.Blank
         }
     }
 }
