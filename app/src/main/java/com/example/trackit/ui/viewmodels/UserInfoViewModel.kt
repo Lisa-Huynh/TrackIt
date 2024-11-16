@@ -44,9 +44,9 @@ class UserInfoViewModel @Inject constructor(
                             lastName = uiState.value.lastName,
                         )
                     )
-                    Navigator.goTo(Route.Home)
                 }
             }
+            Navigator.goTo(Route.Home)
         }
     }
 }

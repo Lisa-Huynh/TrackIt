@@ -3,6 +3,8 @@ package com.example.trackit.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trackit.data.models.Profile
+import com.example.trackit.navigation.Navigator
+import com.example.trackit.navigation.Route
 import com.example.trackit.repositories.AccountRepository
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +25,13 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             val accountId = FirebaseAuth.getInstance().currentUser?.uid!!
             _profileStream.emit(accountRepository.getProfile(accountId))
+        }
+    }
+
+    fun onLogoutButtonClick() {
+        FirebaseAuth.getInstance().signOut()
+        viewModelScope.launch {
+            Navigator.goTo(Route.Login)
         }
     }
 }

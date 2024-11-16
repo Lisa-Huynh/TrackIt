@@ -2,6 +2,7 @@ package com.example.trackit
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
@@ -71,6 +72,9 @@ class MainActivity : ComponentActivity() {
 
                             composable<Route.Login> {
                                 LoginScreen()
+                                BackHandler(enabled = true) {
+                                // Do not allow back navigation
+                                }
                             }
 
                             composable<Route.UserInfo> {

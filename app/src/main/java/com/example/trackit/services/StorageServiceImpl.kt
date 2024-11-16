@@ -7,21 +7,21 @@ import com.example.trackit.data.models.Profile.Companion.fromMap
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import kotlinx.coroutines.tasks.await
+
 
 class StorageServiceImpl @Inject constructor(
-    @ApplicationContext val applicationContext: Context
+    @ApplicationContext val applicationContext: Context,
 ): StorageService {
     override suspend fun addAccount(profile: Profile.Loaded) {
         try {
-            Firebase.firestore.collection("Accounts").document(profile.id).set({
-                "firstName" to profile.firstName
-                "lastName" to profile.lastName
-            }).await()
-//            val reference = Firebase.firestore.collection("Accounts").document(profile.id).get().await()
-//            val temp = reference.get("firstName").toString()
-//            temp
+            val data: MutableMap<String, String> = HashMap()
+            data["firstName"] = profile.firstName
+            data["lastName"] = profile.lastName
+            data["id"] = profile.id
+
+            Firebase.firestore.collection("Accounts").document(profile.id).set(data).await()
         } catch (e: Exception) {
             Toast.makeText(applicationContext, e.message, Toast.LENGTH_SHORT).show()
         }

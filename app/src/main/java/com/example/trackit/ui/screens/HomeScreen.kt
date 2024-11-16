@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.trackit.data.models.Profile
@@ -39,7 +40,7 @@ fun HomeScreen(
             Column(
                 modifier = Modifier.padding(padding)
             ) {
-                HomeScreenContent()
+                HomeScreenContent(homeViewModel::onLogoutButtonClick)
             }
         }
     )
@@ -91,8 +92,24 @@ fun HomeScreenTopBar(
 }
 
 @Composable
-fun HomeScreenContent() {
-
+fun HomeScreenContent(onLogoutButtonClick: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Bottom,
+    ) {
+        Button(
+            modifier = Modifier
+                .wrapContentSize(),
+            onClick = onLogoutButtonClick,
+            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary),
+        ) {
+            Text(
+                modifier = Modifier.padding(horizontal = 20.dp),
+                text = "Logout",
+            )
+        }
+    }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -101,7 +118,6 @@ fun HomeScreenContent() {
 fun HomeScreenPreview() {
     AppTheme {
         HomeScreenTopBar("Lisa")
-        HomeScreenContent(
-        )
+        HomeScreenContent({})
     }
 }
