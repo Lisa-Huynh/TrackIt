@@ -1,7 +1,5 @@
 package com.example.trackit.home
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -32,7 +30,8 @@ fun HomeScreen(
         scaffoldState = scaffoldState,
         topBar = {
             HomeScreenTopBar(
-                name = (profile as? Profile.Loaded)?.firstName ?: ""
+                name = (profile as? Profile.Loaded)?.firstName ?: "",
+                date = homeViewModel.currentDate,
             )
         },
         content = { padding ->
@@ -47,7 +46,8 @@ fun HomeScreen(
 
 @Composable
 fun HomeScreenTopBar(
-    name : String
+    name : String,
+    date : String,
 ) {
     TopAppBar(
         modifier = Modifier
@@ -68,19 +68,21 @@ fun HomeScreenTopBar(
                             style = MaterialTheme.typography.h1
                         )
                         Text(
-                            text = "MM dd",
+                            modifier = Modifier.padding(top = 8.dp),
+                            text = date,
                             style = MaterialTheme.typography.h4
                         )
                     }
                     IconButton(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(70.dp),
                         onClick = { /*TODO*/ },
                         content = {
                             Icon(
-                                Icons.Rounded.AccountCircle,
+                                imageVector = Icons.Rounded.AccountCircle,
                                 contentDescription = "User Profile",
-                                modifier = Modifier
-                                    .height(60.dp)
-                                    .width(60.dp)
+                                modifier = Modifier.fillMaxSize(),
                             )
                         }
                     )
@@ -111,12 +113,11 @@ fun HomeScreenContent(onLogoutButtonClick: () -> Unit) {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun HomeScreenPreview() {
     AppTheme {
-        HomeScreenTopBar("Lisa")
-        HomeScreenContent({})
+        HomeScreenTopBar("Lisa", "Nov 15. 2024")
+        HomeScreenContent { }
     }
 }
