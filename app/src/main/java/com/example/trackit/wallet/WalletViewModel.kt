@@ -1,18 +1,7 @@
-package com.example.trackit.ui.viewmodels
+package com.example.trackit.wallet
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.trackit.data.models.Item
-import com.example.trackit.data.repositories.ItemRepository
-import com.example.trackit.util.Action
-import com.example.trackit.util.RequestState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

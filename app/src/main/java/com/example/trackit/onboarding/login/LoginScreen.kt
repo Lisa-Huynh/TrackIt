@@ -1,4 +1,4 @@
-package com.example.trackit.ui.screens.onboarding
+package com.example.trackit.onboarding.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -17,7 +17,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.trackit.ui.theme.AppTheme
-import com.example.trackit.ui.viewmodels.LoginViewModel
 import com.example.trackit.util.LoginUiState
 
 @Composable

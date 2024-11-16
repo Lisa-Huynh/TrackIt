@@ -1,4 +1,4 @@
-package com.example.trackit.ui.screens
+package com.example.trackit.home
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.trackit.data.models.Profile
 import com.example.trackit.ui.theme.*
-import com.example.trackit.ui.viewmodels.HomeViewModel
 
 @Composable
 fun HomeScreen(

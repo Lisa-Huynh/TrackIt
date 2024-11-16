@@ -1,10 +1,7 @@
-package com.example.trackit.ui.screens
+package com.example.trackit.wallet
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccountCircle
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

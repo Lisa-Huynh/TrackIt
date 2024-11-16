@@ -1,4 +1,4 @@
-package com.example.trackit.ui.screens.onboarding
+package com.example.trackit.onboarding.userinfo
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.trackit.ui.theme.AppTheme
-import com.example.trackit.ui.viewmodels.UserInfoViewModel
 import com.example.trackit.util.ProfileUiState
 
 @Composable

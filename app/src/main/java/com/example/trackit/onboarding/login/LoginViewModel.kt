@@ -1,4 +1,4 @@
-package com.example.trackit.ui.viewmodels
+package com.example.trackit.onboarding.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

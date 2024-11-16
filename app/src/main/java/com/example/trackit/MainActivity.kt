@@ -18,9 +18,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.trackit.navigation.NavController
 import com.example.trackit.navigation.Route
-import com.example.trackit.ui.screens.HomeScreen
-import com.example.trackit.ui.screens.onboarding.LoginScreen
-import com.example.trackit.ui.screens.onboarding.UserInfoScreen
+import com.example.trackit.home.HomeScreen
+import com.example.trackit.onboarding.login.LoginScreen
+import com.example.trackit.onboarding.userinfo.UserInfoScreen
 import com.example.trackit.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
