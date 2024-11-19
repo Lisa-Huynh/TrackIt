@@ -21,6 +21,7 @@ import com.example.trackit.navigation.Route
 import com.example.trackit.home.HomeScreen
 import com.example.trackit.onboarding.login.LoginScreen
 import com.example.trackit.onboarding.userinfo.UserInfoScreen
+import com.example.trackit.profile.ProfileScreen
 import com.example.trackit.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -69,16 +70,17 @@ class MainActivity : ComponentActivity() {
                             composable<Route.Home> {
                                 HomeScreen()
                             }
-
                             composable<Route.Login> {
                                 LoginScreen()
                                 BackHandler(enabled = true) {
                                 // Do not allow back navigation
                                 }
                             }
-
                             composable<Route.UserInfo> {
                                 UserInfoScreen()
+                            }
+                            composable<Route.Profile> {
+                                ProfileScreen()
                             }
                         }
                     }
@@ -87,6 +89,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
-fun Boolean?.isTrue() = this == true

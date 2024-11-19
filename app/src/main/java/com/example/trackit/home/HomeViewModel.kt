@@ -25,7 +25,7 @@ class HomeViewModel @Inject constructor(
 
     private val formatter = getDateInstance()
     private val date = Date()
-    val currentDate = formatter.format(date)
+    val currentDate: String = formatter.format(date)
 
     init {
         viewModelScope.launch {
@@ -34,10 +34,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onLogoutButtonClick() {
-        FirebaseAuth.getInstance().signOut()
+    fun onProfileIconClick() {
         viewModelScope.launch {
-            Navigator.goTo(Route.Login)
+            Navigator.goTo(Route.Profile)
         }
     }
 }

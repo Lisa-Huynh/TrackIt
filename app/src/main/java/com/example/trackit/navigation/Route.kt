@@ -11,4 +11,7 @@ sealed class Route {
 
     @Serializable
     data object UserInfo : Route()
+
+    @Serializable
+    data object Profile : Route()
 }

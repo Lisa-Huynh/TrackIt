@@ -21,24 +21,25 @@ import com.example.trackit.ui.theme.*
 
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = hiltViewModel(),
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val scaffoldState = rememberScaffoldState()
-    val profile by homeViewModel.profileStream.collectAsState()
+    val profile by viewModel.profileStream.collectAsState()
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
             HomeScreenTopBar(
                 name = (profile as? Profile.Loaded)?.firstName ?: "",
-                date = homeViewModel.currentDate,
+                date = viewModel.currentDate,
+                onProfileIconClick = viewModel::onProfileIconClick,
             )
         },
         content = { padding ->
             Column(
                 modifier = Modifier.padding(padding)
             ) {
-                HomeScreenContent(homeViewModel::onLogoutButtonClick)
+                HomeScreenContent()
             }
         }
     )
@@ -46,20 +47,20 @@ fun HomeScreen(
 
 @Composable
 fun HomeScreenTopBar(
-    name : String,
-    date : String,
+    name: String,
+    date: String,
+    onProfileIconClick: () -> Unit,
 ) {
+    val modifier = Modifier.fillMaxWidth()
     TopAppBar(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
+        modifier = modifier.wrapContentHeight(),
         backgroundColor = MaterialTheme.colors.topAppBarBackgroundColor,
         contentColor = MaterialTheme.colors.topAppBarContentColor,
         elevation = 0.dp,
         contentPadding = PaddingValues(25.dp, 15.dp),
         content = {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = modifier,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 content = {
                     Column {
@@ -77,7 +78,7 @@ fun HomeScreenTopBar(
                         modifier = Modifier
                             .fillMaxHeight()
                             .width(70.dp),
-                        onClick = { /*TODO*/ },
+                        onClick = onProfileIconClick,
                         content = {
                             Icon(
                                 imageVector = Icons.Rounded.AccountCircle,
@@ -93,23 +94,12 @@ fun HomeScreenTopBar(
 }
 
 @Composable
-fun HomeScreenContent(onLogoutButtonClick: () -> Unit) {
+fun HomeScreenContent() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom,
     ) {
-        Button(
-            modifier = Modifier
-                .wrapContentSize(),
-            onClick = onLogoutButtonClick,
-            colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.secondary),
-        ) {
-            Text(
-                modifier = Modifier.padding(horizontal = 20.dp),
-                text = "Logout",
-            )
-        }
     }
 }
 
@@ -117,7 +107,7 @@ fun HomeScreenContent(onLogoutButtonClick: () -> Unit) {
 @Composable
 fun HomeScreenPreview() {
     AppTheme {
-        HomeScreenTopBar("Lisa", "Nov 15. 2024")
-        HomeScreenContent { }
+        HomeScreenTopBar("Lisa", "Nov 15. 2024") {}
+        HomeScreenContent()
     }
 }
