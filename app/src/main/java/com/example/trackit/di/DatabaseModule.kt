@@ -2,7 +2,7 @@ package com.example.trackit.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.trackit.data.database.ItemDatabase
+import com.example.trackit.data.database.AccountDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,11 +21,11 @@ object DatabaseModule {
         @ApplicationContext context: Context
     ) = Room.databaseBuilder(
         context,
-        ItemDatabase::class.java,
+        AccountDatabase::class.java,
         "item_database"
     ).build()
 
     @Singleton
     @Provides
-    fun provideDao(database: ItemDatabase) = database.itemDao()
+    fun provideDao(database: AccountDatabase) = database.itemDao()
 }

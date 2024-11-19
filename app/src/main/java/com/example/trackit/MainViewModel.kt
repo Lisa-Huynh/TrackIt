@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.trackit.navigation.NavController
 import com.example.trackit.navigation.Navigator
 import com.example.trackit.navigation.Route
-import com.example.trackit.repositories.AuthRepository
+import com.example.trackit.data.repositories.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow

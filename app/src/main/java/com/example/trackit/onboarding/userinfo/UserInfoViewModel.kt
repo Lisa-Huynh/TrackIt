@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.trackit.data.models.Profile
 import com.example.trackit.navigation.Navigator
 import com.example.trackit.navigation.Route
-import com.example.trackit.repositories.AccountRepository
+import com.example.trackit.data.repositories.ProfileRepository
 import com.example.trackit.util.ProfileUiState
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class UserInfoViewModel @Inject constructor(
-    private val accountRepository : AccountRepository
+    private val profileRepository : ProfileRepository
 ): ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState("", ""))
     val uiState = _uiState.asStateFlow()
@@ -37,7 +37,7 @@ class UserInfoViewModel @Inject constructor(
         viewModelScope.launch {
             FirebaseAuth.getInstance().currentUser?.let { user ->
                 user.uid.let { userId ->
-                    accountRepository.addAccount(
+                    profileRepository.addAccount(
                         Profile.Loaded(
                             id = userId,
                             firstName = uiState.value.firstName,

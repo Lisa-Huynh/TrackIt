@@ -1,9 +1,8 @@
-package com.example.trackit.repositories
+package com.example.trackit.data.repositories
 
 import com.example.trackit.services.AccountService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 import javax.inject.Singleton
 

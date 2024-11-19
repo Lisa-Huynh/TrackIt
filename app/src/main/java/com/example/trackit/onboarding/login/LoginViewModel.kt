@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.trackit.data.models.Profile
 import com.example.trackit.navigation.Navigator
 import com.example.trackit.navigation.Route
-import com.example.trackit.repositories.AccountRepository
-import com.example.trackit.repositories.AuthRepository
+import com.example.trackit.data.repositories.ProfileRepository
+import com.example.trackit.data.repositories.AuthRepository
 import com.example.trackit.util.LoginUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val accountRepository : AccountRepository,
+    private val profileRepository : ProfileRepository,
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState("", ""))
@@ -39,7 +39,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             val user = authRepository.emailLogin(uiState.value.email, uiState.value.password)
             if (user != null) {
-                if (accountRepository.getProfile(user.uid) is Profile.Blank) {
+                if (profileRepository.getProfile(user.uid) is Profile.Blank) {
                     Navigator.goTo(Route.UserInfo)
                 } else {
                     Navigator.goTo(Route.Home)

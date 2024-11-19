@@ -2,10 +2,13 @@ package com.example.trackit.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.trackit.data.models.Account
 import com.example.trackit.data.models.Profile
+import com.example.trackit.data.models.Wallet
+import com.example.trackit.data.repositories.AccountRepository
 import com.example.trackit.navigation.Navigator
 import com.example.trackit.navigation.Route
-import com.example.trackit.repositories.AccountRepository
+import com.example.trackit.data.repositories.ProfileRepository
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.text.DateFormat.getDateInstance
@@ -17,11 +20,14 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val accountRepository : AccountRepository,
+    private val profileRepository : ProfileRepository,
+    private val accountRepository: AccountRepository,
 ): ViewModel() {
 
     private val _profileStream = MutableStateFlow<Profile>(Profile.Blank)
     val profileStream = _profileStream.asStateFlow()
+
+    private val accountStream = MutableStateFlow<List<Account>>(emptyList())
 
     private val formatter = getDateInstance()
     private val date = Date()
@@ -30,7 +36,10 @@ class HomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val accountId = FirebaseAuth.getInstance().currentUser?.uid!!
-            _profileStream.emit(accountRepository.getProfile(accountId))
+            _profileStream.emit(profileRepository.getProfile(accountId))
+        }
+        viewModelScope.launch {
+            accountStream.emit(accountRepository.getAllAccounts())
         }
     }
 

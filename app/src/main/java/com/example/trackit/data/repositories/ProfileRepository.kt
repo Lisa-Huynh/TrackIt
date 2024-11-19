@@ -1,4 +1,4 @@
-package com.example.trackit.repositories
+package com.example.trackit.data.repositories
 
 import com.example.trackit.data.models.Profile
 import com.example.trackit.services.StorageService
@@ -6,7 +6,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AccountRepository @Inject constructor(
+class ProfileRepository @Inject constructor(
     private val storageService: StorageService
 ) {
 

@@ -1,6 +1,9 @@
 package com.example.trackit.data.models
 
-data class Wallet(
-    val accounts: List<Item> = listOf(),
-    val isEmpty: Boolean = true
-)
+sealed class Wallet {
+    data object Loading : Wallet()
+
+    data class Loaded (
+        val accounts: List<Account>,
+    ) : Wallet()
+}
