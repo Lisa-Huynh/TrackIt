@@ -1,6 +1,5 @@
 package com.example.trackit.data.repositories
 
-import com.example.trackit.data.models.Account
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 

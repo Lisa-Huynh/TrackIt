@@ -4,6 +4,6 @@ sealed class Wallet {
     data object Loading : Wallet()
 
     data class Loaded (
-        val accounts: List<Account>,
+        val cards: List<Card>,
     ) : Wallet()
 }
