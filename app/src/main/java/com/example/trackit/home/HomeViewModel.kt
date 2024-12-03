@@ -38,9 +38,9 @@ class HomeViewModel @Inject constructor(
             val accountId = FirebaseAuth.getInstance().currentUser?.uid!!
             _profileStream.emit(profileRepository.getProfile(accountId))
         }
-        viewModelScope.launch {
-            accountStream.emit(accountRepository.getAllAccounts())
-        }
+//        viewModelScope.launch {
+//            accountStream.emit(accountRepository.getAllAccounts())
+//        }
     }
 
     fun onProfileIconClick() {
