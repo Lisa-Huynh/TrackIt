@@ -1,6 +1,9 @@
 package com.example.trackit.home
 
+import android.content.res.Resources.Theme
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,38 +14,33 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
+import androidx.compose.material3.Shapes
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.trackit.data.models.Profile
 import com.example.trackit.ui.theme.*
+import kotlinx.serialization.json.JsonNull.content
 
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
-    val scaffoldState = rememberScaffoldState()
     val profile by viewModel.profileStream.collectAsState()
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = {
-            HomeScreenTopBar(
-                name = (profile as? Profile.Loaded)?.firstName ?: "",
-                date = viewModel.currentDate,
-                onProfileIconClick = viewModel::onProfileIconClick,
-            )
-        },
-        content = { padding ->
-            Column(
-                modifier = Modifier.padding(padding)
-            ) {
-                HomeScreenContent()
-            }
-        }
-    )
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        HomeScreenTopBar(
+            name = (profile as? Profile.Loaded)?.firstName ?: "",
+            date = viewModel.currentDate,
+            onProfileIconClick = viewModel::onProfileIconClick,
+        )
+        HomeScreenContent()
+    }
 }
 
 @Composable
@@ -95,11 +93,39 @@ fun HomeScreenTopBar(
 
 @Composable
 fun HomeScreenContent() {
+    val modifier = Modifier.fillMaxWidth()
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Bottom,
     ) {
+        WalletSection(modifier)
+    }
+}
+
+@Composable
+fun WalletSection(modifier: Modifier) {
+    Box(
+        modifier = modifier
+            .padding(horizontal = 50.dp)
+    ) {
+        Box(modifier = modifier.padding(horizontal = 10.dp)
+            .align(Alignment.TopCenter)
+            .height(50.dp)
+            .clip(shape = RoundedCornerShape(20.dp))
+            .background(color = MaterialTheme.colors.primary)
+        )
+        Box(modifier = modifier.padding(start = 10.dp, end = 10.dp, top = 7.dp)
+            .align(Alignment.TopCenter)
+            .height(50.dp)
+            .clip(shape = RoundedCornerShape(20.dp))
+            .background(color = MaterialTheme.colors.secondary)
+        )
+        Box(modifier = modifier.padding(top = 20.dp)
+            .align(Alignment.BottomCenter)
+            .height(170.dp)
+            .clip(shape = RoundedCornerShape(15.dp))
+            .background(color = MaterialTheme.colors.primaryVariant),
+        )
     }
 }
 
@@ -107,7 +133,6 @@ fun HomeScreenContent() {
 @Composable
 fun HomeScreenPreview() {
     AppTheme {
-        HomeScreenTopBar("Lisa", "Nov 15. 2024") {}
-        HomeScreenContent()
+        HomeScreen()
     }
 }

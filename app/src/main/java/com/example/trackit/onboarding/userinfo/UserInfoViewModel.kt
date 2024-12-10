@@ -42,6 +42,7 @@ class UserInfoViewModel @Inject constructor(
                             id = userId,
                             firstName = uiState.value.firstName,
                             lastName = uiState.value.lastName,
+                            cards = emptyList(),
                         )
                     )
                 }
