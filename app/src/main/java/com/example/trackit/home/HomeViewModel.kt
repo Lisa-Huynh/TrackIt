@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trackit.data.models.Card
 import com.example.trackit.data.models.Profile
-import com.example.trackit.data.repositories.AccountRepository
 import com.example.trackit.navigation.Navigator
 import com.example.trackit.navigation.Route
 import com.example.trackit.data.repositories.ProfileRepository
@@ -20,13 +19,10 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val profileRepository : ProfileRepository,
-    private val accountRepository: AccountRepository,
 ): ViewModel() {
 
     private val _profileStream = MutableStateFlow<Profile>(Profile.Blank)
     val profileStream = _profileStream.asStateFlow()
-
-    private val cardStream = MutableStateFlow<List<Card>>(emptyList())
 
     private val formatter = getDateInstance()
     private val date = Date()
@@ -37,9 +33,6 @@ class HomeViewModel @Inject constructor(
             val accountId = FirebaseAuth.getInstance().currentUser?.uid!!
             _profileStream.emit(profileRepository.getProfile(accountId))
         }
-//        viewModelScope.launch {
-//            accountStream.emit(accountRepository.getAllAccounts())
-//        }
     }
 
     fun onProfileIconClick() {
