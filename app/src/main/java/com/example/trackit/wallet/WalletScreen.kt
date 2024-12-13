@@ -1,6 +1,7 @@
 package com.example.trackit.wallet
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -11,22 +12,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.trackit.ui.theme.AppTheme
 import com.example.trackit.ui.theme.topAppBarBackgroundColor
 import com.example.trackit.ui.theme.topAppBarContentColor
 
 @Composable
-fun WalletScreen() {
+fun WalletScreen(
+    viewModel: WalletViewModel = hiltViewModel(),
+) {
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         WalletScreenTopBar()
-        WalletScreenContent()
+        WalletScreenContent(
+            onAddCardClick = viewModel::onAddCardClick,
+        )
     }
 }
 
 @Composable
 fun WalletScreenContent(
+    onAddCardClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -34,6 +41,7 @@ fun WalletScreenContent(
         Box(
             modifier = Modifier
                 .wrapContentSize()
+                .clickable { onAddCardClick.invoke() }
                 .align(Alignment.CenterHorizontally)
                 .clip(shape = RoundedCornerShape(15.dp))
                 .background(MaterialTheme.colors.secondary)
