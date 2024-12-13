@@ -1,10 +1,14 @@
 package com.example.trackit.wallet
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.trackit.ui.theme.AppTheme
@@ -13,22 +17,34 @@ import com.example.trackit.ui.theme.topAppBarContentColor
 
 @Composable
 fun WalletScreen() {
-    val scaffoldState = rememberScaffoldState()
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        WalletScreenTopBar()
+        WalletScreenContent()
+    }
+}
 
-    Scaffold(
-        scaffoldState = scaffoldState,
-        topBar = {
-            WalletScreenTopBar()
-        },
-        content = { padding ->
-            Column(
-                modifier = Modifier.padding(padding)
-            ) {
-
-            }
-
+@Composable
+fun WalletScreenContent(
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        Box(
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.CenterHorizontally)
+                .clip(shape = RoundedCornerShape(15.dp))
+                .background(MaterialTheme.colors.secondary)
+        ) {
+            Text(
+                modifier = Modifier.padding(horizontal = 25.dp, vertical = 15.dp),
+                text = "Add a card",
+                style = MaterialTheme.typography.h4
+            )
         }
-    )
+    }
 }
 
 @Composable
