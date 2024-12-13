@@ -14,4 +14,7 @@ sealed class Route {
 
     @Serializable
     data object Profile : Route()
+
+    @Serializable
+    data object Wallet : Route()
 }

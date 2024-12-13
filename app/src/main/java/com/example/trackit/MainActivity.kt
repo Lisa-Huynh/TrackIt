@@ -23,6 +23,7 @@ import com.example.trackit.onboarding.login.LoginScreen
 import com.example.trackit.onboarding.userinfo.UserInfoScreen
 import com.example.trackit.profile.ProfileScreen
 import com.example.trackit.ui.theme.AppTheme
+import com.example.trackit.wallet.WalletScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -81,6 +82,9 @@ class MainActivity : ComponentActivity() {
                             }
                             composable<Route.Profile> {
                                 ProfileScreen()
+                            }
+                            composable<Route.Wallet> {
+                                WalletScreen()
                             }
                         }
                     }

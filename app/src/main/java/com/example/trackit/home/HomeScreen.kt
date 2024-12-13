@@ -1,7 +1,7 @@
 package com.example.trackit.home
 
-import android.content.res.Resources.Theme
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -14,7 +14,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
-import androidx.compose.material3.Shapes
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -23,7 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.trackit.data.models.Profile
 import com.example.trackit.ui.theme.*
-import kotlinx.serialization.json.JsonNull.content
 
 @Composable
 fun HomeScreen(
@@ -39,7 +37,9 @@ fun HomeScreen(
             date = viewModel.currentDate,
             onProfileIconClick = viewModel::onProfileIconClick,
         )
-        HomeScreenContent()
+        HomeScreenContent(
+            onWalletClick = viewModel::onWalletClick,
+        )
     }
 }
 
@@ -92,39 +92,51 @@ fun HomeScreenTopBar(
 }
 
 @Composable
-fun HomeScreenContent() {
+fun HomeScreenContent(
+    onWalletClick: () -> Unit,
+) {
     val modifier = Modifier.fillMaxWidth()
     Column(
-        modifier = modifier,
+        modifier = modifier.padding(vertical = 20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        WalletSection(modifier)
+        WalletSection(
+            modifier,
+            onWalletClick,
+        )
     }
 }
 
 @Composable
-fun WalletSection(modifier: Modifier) {
+fun WalletSection(
+    modifier: Modifier,
+    onWalletClick: () -> Unit,
+) {
     Box(
         modifier = modifier
             .padding(horizontal = 50.dp)
+            .clickable { onWalletClick.invoke() }
     ) {
-        Box(modifier = modifier.padding(horizontal = 10.dp)
+        Box(modifier = modifier
+            .padding(horizontal = 15.dp)
             .align(Alignment.TopCenter)
             .height(50.dp)
             .clip(shape = RoundedCornerShape(20.dp))
             .background(color = MaterialTheme.colors.primary)
         )
-        Box(modifier = modifier.padding(start = 10.dp, end = 10.dp, top = 7.dp)
+        Box(modifier = modifier
+            .padding(start = 10.dp, end = 10.dp, top = 7.dp)
             .align(Alignment.TopCenter)
             .height(50.dp)
             .clip(shape = RoundedCornerShape(20.dp))
             .background(color = MaterialTheme.colors.secondary)
         )
-        Box(modifier = modifier.padding(top = 20.dp)
+        Box(modifier = modifier
+            .padding(top = 20.dp)
             .align(Alignment.BottomCenter)
             .height(170.dp)
             .clip(shape = RoundedCornerShape(15.dp))
-            .background(color = MaterialTheme.colors.primaryVariant),
+            .background(color = MaterialTheme.colors.surface),
         )
     }
 }

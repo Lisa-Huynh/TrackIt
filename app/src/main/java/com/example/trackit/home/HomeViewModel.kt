@@ -40,4 +40,10 @@ class HomeViewModel @Inject constructor(
             Navigator.goTo(Route.Profile)
         }
     }
+
+    fun onWalletClick() {
+        viewModelScope.launch {
+            Navigator.goTo(Route.Wallet)
+        }
+    }
 }
