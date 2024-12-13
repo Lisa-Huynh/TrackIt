@@ -11,6 +11,7 @@ private val DarkColorScheme = darkColors(
     primaryVariant = Purple700,
     secondary = Teal200,
     surface = WalletBrown,
+    onError = LightGrey,
 )
 
 private val LightColorScheme = lightColors(
@@ -18,6 +19,7 @@ private val LightColorScheme = lightColors(
     primaryVariant = Purple700,
     secondary = Teal200,
     surface = WalletBrown,
+    onError = LightGrey,
 )
 
 @Composable

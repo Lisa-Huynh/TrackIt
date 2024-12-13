@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trackit.data.models.Card
 import com.example.trackit.data.models.Profile
+import com.example.trackit.data.models.Wallet
 import com.example.trackit.navigation.Navigator
 import com.example.trackit.navigation.Route
 import com.example.trackit.data.repositories.ProfileRepository
@@ -23,6 +24,9 @@ class HomeViewModel @Inject constructor(
 
     private val _profileStream = MutableStateFlow<Profile>(Profile.Blank)
     val profileStream = _profileStream.asStateFlow()
+
+    private val _walletStream = MutableStateFlow<Wallet>(Wallet.Loading)
+    val walletStream = _walletStream.asStateFlow()
 
     private val formatter = getDateInstance()
     private val date = Date()
