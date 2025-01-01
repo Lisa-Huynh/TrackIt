@@ -6,6 +6,20 @@ sealed class Wallet {
     data class Loaded (
         val walletId: String,
         val ownerId: String,
-        val cards: List<Card>,
+        val cardIds: List<String>,
     ) : Wallet()
+
+    companion object {
+        fun fromMap(data: Map<String, Any>): Wallet.Loaded {
+            return Wallet.Loaded(
+                walletId = data["id"].toString(),
+                ownerId = data["ownerId"].toString(),
+                cardIds = data["cardIds"].toListOfStrings(),
+            )
+        }
+
+        private fun ArrayList.toListOfStrings() {
+
+        }
+    }
 }

@@ -2,7 +2,6 @@ package com.example.trackit.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.trackit.data.models.Card
 import com.example.trackit.data.models.Profile
 import com.example.trackit.data.models.Wallet
 import com.example.trackit.navigation.Navigator

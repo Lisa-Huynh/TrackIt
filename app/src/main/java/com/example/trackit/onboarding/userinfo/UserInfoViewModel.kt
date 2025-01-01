@@ -6,6 +6,7 @@ import com.example.trackit.data.models.Profile
 import com.example.trackit.navigation.Navigator
 import com.example.trackit.navigation.Route
 import com.example.trackit.data.repositories.ProfileRepository
+import com.example.trackit.data.repositories.WalletRepository
 import com.example.trackit.util.ProfileUiState
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,10 +17,13 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class UserInfoViewModel @Inject constructor(
-    private val profileRepository : ProfileRepository
+    private val profileRepository : ProfileRepository,
+    private val walletRepository: WalletRepository,
 ): ViewModel() {
     private val _uiState = MutableStateFlow(ProfileUiState("", ""))
     val uiState = _uiState.asStateFlow()
+
+    private var walletId = ""
 
     fun onFirstNameChange(firstName: String) {
         viewModelScope.launch {
@@ -37,12 +41,13 @@ class UserInfoViewModel @Inject constructor(
         viewModelScope.launch {
             FirebaseAuth.getInstance().currentUser?.let { user ->
                 user.uid.let { userId ->
+                    walletId = walletRepository.getNewWallet(userId).walletId
                     profileRepository.addAccount(
                         Profile.Loaded(
                             id = userId,
                             firstName = uiState.value.firstName,
                             lastName = uiState.value.lastName,
-                            cards = emptyList(),
+                            walletId = walletId,
                         )
                     )
                 }

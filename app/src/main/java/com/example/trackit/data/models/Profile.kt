@@ -6,7 +6,7 @@ sealed class Profile {
         val id: String,
         val firstName: String,
         val lastName: String,
-        val cards: List<Card>,
+        val walletId: String,
     ) : Profile()
 
     data object Blank : Profile()
@@ -17,12 +17,8 @@ sealed class Profile {
                     id = data["id"].toString(),
                     firstName = data["firstName"].toString(),
                     lastName = data["lastName"].toString(),
-                    cards = data["cards"].toString().mapToCards(),
+                    walletId = data["walletId"].toString(),
                 )
-        }
-
-        private fun String.mapToCards(): List<Card> {
-            return emptyList()
         }
     }
 }
