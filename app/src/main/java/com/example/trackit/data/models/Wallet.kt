@@ -12,7 +12,7 @@ sealed class Wallet {
     companion object {
         fun fromMap(data: Map<String, Any>): Wallet.Loaded {
             return Wallet.Loaded(
-                walletId = data["id"].toString(),
+                walletId = data["walletId"].toString(),
                 ownerId = data["ownerId"].toString(),
                 cardIds = mapToListOfStrings(data["cardIds"]) ?: emptyList(),
             )

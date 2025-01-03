@@ -20,6 +20,7 @@ class StorageServiceImpl @Inject constructor(
             data["firstName"] = profile.firstName
             data["lastName"] = profile.lastName
             data["id"] = profile.id
+            data["walletId"] = profile.walletId
 
             Firebase.firestore.collection("Accounts").document(profile.id).set(data).await()
         } catch (e: Exception) {

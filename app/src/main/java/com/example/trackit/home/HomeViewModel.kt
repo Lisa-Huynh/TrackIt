@@ -7,6 +7,7 @@ import com.example.trackit.data.models.Wallet
 import com.example.trackit.navigation.Navigator
 import com.example.trackit.navigation.Route
 import com.example.trackit.data.repositories.ProfileRepository
+import com.example.trackit.data.repositories.WalletRepository
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.text.DateFormat.getDateInstance
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val profileRepository : ProfileRepository,
+    private val walletRepository: WalletRepository,
 ): ViewModel() {
 
     private val _profileStream = MutableStateFlow<Profile>(Profile.Blank)
@@ -35,6 +37,14 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             val accountId = FirebaseAuth.getInstance().currentUser?.uid!!
             _profileStream.emit(profileRepository.getProfile(accountId))
+        }
+        viewModelScope.launch {
+            _profileStream.collect { profile ->
+                if (profile is Profile.Loaded) {
+                    val walletId = (profile as? Profile.Loaded)?.walletId
+                    walletId?.let { _walletStream.emit(walletRepository.getWallet(it)) }
+                }
+            }
         }
     }
 
