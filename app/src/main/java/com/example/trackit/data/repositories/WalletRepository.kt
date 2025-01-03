@@ -21,4 +21,8 @@ class WalletRepository @Inject constructor(
     suspend fun addCard(walletId: String, card: Card) {
         walletService.addCard(walletId, card)
     }
+
+    suspend fun getCards(walletId: String): List<Card> {
+        return walletService.getCards(walletId)
+    }
 }

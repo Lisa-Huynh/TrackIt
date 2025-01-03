@@ -42,4 +42,27 @@ class WalletServiceImpl @Inject constructor(
         Firebase.firestore.collection("Wallets").document(walletId).update("cardIds", FieldValue.arrayUnion(cardId)).await()
         Firebase.firestore.collection("Cards").document(cardId).set(cardData).await()
     }
+
+    override suspend fun getCards(walletId: String): List<Card> {
+        val cardIds = this.getWallet(walletId).cardIds
+        return mapCardIdsToListOfCards(cardIds)
+    }
+
+    override suspend fun getCard(cardId: String): Card {
+        val cardData = Firebase.firestore.collection("Cards").document(cardId).get().await().data!!
+        return mapToCard(cardData)
+    }
+
+    private suspend fun mapCardIdsToListOfCards(cardIds: List<String>): List<Card> {
+        return cardIds.map { cardId ->
+            this.getCard(cardId)
+        }
+    }
+
+    private fun mapToCard(data: Map<String, Any>): Card {
+        return Card(
+            cardName = data["cardName"].toString(),
+            totalExpense = data["totalExpense"].toString(),
+        )
+    }
 }

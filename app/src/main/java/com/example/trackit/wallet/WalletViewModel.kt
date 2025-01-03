@@ -26,6 +26,15 @@ class WalletViewModel @Inject constructor(
     private val _cardInfoUiState = MutableStateFlow(CardInfoUiState("", ""))
     val cardInfoUiState = _cardInfoUiState.asStateFlow()
 
+    private val _cardsStream = MutableStateFlow<List<Card>>(emptyList())
+    val cardsStream = _cardsStream.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            _cardsStream.emit(walletRepository.getCards(getWalletId()))
+        }
+    }
+
     fun onCardNameChange(cardName: String) {
         viewModelScope.launch {
             _cardInfoUiState.emit(CardInfoUiState(cardName, cardInfoUiState.value.initialExpense))
@@ -50,10 +59,10 @@ class WalletViewModel @Inject constructor(
                 cardName = _cardInfoUiState.value.cardName,
                 totalExpense = _cardInfoUiState.value.initialExpense,
             )
-            val accountId = FirebaseAuth.getInstance().currentUser?.uid!!
-            val walletId = (profileRepository.getProfile(accountId) as? Profile.Loaded)?.walletId!!
+            val walletId = getWalletId()
             walletRepository.addCard(walletId, card)
             _bottomSheetState.emit(BottomSheetUiState.HIDDEN)
+            _cardsStream.emit(walletRepository.getCards(walletId))
         }
     }
 
@@ -61,5 +70,10 @@ class WalletViewModel @Inject constructor(
         viewModelScope.launch {
             _bottomSheetState.emit(BottomSheetUiState.HIDDEN)
         }
+    }
+
+    private suspend fun getWalletId(): String {
+        val accountId = FirebaseAuth.getInstance().currentUser?.uid!!
+        return (profileRepository.getProfile(accountId) as? Profile.Loaded)?.walletId!!
     }
 }

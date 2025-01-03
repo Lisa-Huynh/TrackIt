@@ -8,4 +8,6 @@ interface WalletService {
     suspend fun createWallet(ownerId: String): Wallet.Loaded
     suspend fun getWallet(walletId: String): Wallet.Loaded
     suspend fun addCard(walletId: String, card: Card)
+    suspend fun getCards(walletId: String): List<Card>
+    suspend fun getCard(cardId: String): Card
 }
