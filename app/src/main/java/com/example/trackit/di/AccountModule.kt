@@ -4,6 +4,8 @@ import com.example.trackit.services.AccountService
 import com.example.trackit.services.AccountServiceImpl
 import com.example.trackit.services.StorageService
 import com.example.trackit.services.StorageServiceImpl
+import com.example.trackit.services.WalletService
+import com.example.trackit.services.WalletServiceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -22,4 +24,9 @@ abstract class AccountModule {
     abstract fun bindStorageService(
         storageServiceImpl: StorageServiceImpl
     ): StorageService
+
+    @Binds
+    abstract fun bindWalletService(
+        walletServiceImpl: WalletServiceImpl
+    ): WalletService
 }

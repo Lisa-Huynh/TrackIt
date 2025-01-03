@@ -41,7 +41,7 @@ fun HomeScreen(
             onProfileIconClick = viewModel::onProfileIconClick,
         )
         HomeScreenContent(
-            isWalletEmpty = (wallet as? Wallet.Loaded)?.cards?.isEmpty() ?: true,
+            isWalletEmpty = (wallet as? Wallet.Loaded)?.cardIds?.isEmpty() ?: true,
             onWalletClick = viewModel::onWalletClick,
         )
     }

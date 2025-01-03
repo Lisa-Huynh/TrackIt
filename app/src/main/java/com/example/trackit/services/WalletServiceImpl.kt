@@ -6,8 +6,10 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class WalletServiceImpl : WalletService {
+class WalletServiceImpl @Inject constructor(
+): WalletService {
     override suspend fun createWallet(ownerId: String): Wallet.Loaded {
         val walletId = Firebase.firestore.collection("Wallets").document().id
         val wallet = hashMapOf(

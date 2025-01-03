@@ -14,12 +14,12 @@ sealed class Wallet {
             return Wallet.Loaded(
                 walletId = data["id"].toString(),
                 ownerId = data["ownerId"].toString(),
-                cardIds = data["cardIds"].toListOfStrings(),
+                cardIds = mapToListOfStrings(data["cardIds"]) ?: emptyList(),
             )
         }
 
-        private fun ArrayList.toListOfStrings() {
-
+        private fun mapToListOfStrings(data: Any?): List<String>? {
+            return (data as? ArrayList<String>)?.toList()
         }
     }
 }
