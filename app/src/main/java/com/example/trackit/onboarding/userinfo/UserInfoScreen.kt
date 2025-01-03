@@ -84,7 +84,7 @@ fun UserInfoScreenContent(
             contentPadding = PaddingValues(60.dp, 10.dp),
             content = {
                 Text(
-                    text = "Submit Information",
+                    text = "Submit information",
                     style = MaterialTheme.typography.h4,
                     textAlign = TextAlign.Center,
                     color = Color.White
@@ -117,7 +117,7 @@ fun FirstNameField(
     OutlinedTextField(
         value = value,
         onValueChange = { onValueChange(it) },
-        label = { Text(text = "First Name") },
+        label = { Text(text = "First name") },
         placeholder = { Text(text = "Enter your first name") },
         singleLine = true,
     )
@@ -131,7 +131,7 @@ fun LastNameField(
     OutlinedTextField(
         value = value,
         onValueChange = { onValueChange(it) },
-        label = { Text(text = "Last Name") },
+        label = { Text(text = "Last name") },
         placeholder = { Text(text = "Enter your last name") },
         singleLine = true,
     )

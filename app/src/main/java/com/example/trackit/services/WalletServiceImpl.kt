@@ -1,5 +1,6 @@
 package com.example.trackit.services
 
+import com.example.trackit.data.models.Card
 import com.example.trackit.data.models.Wallet
 import com.example.trackit.data.models.Wallet.Companion.fromMap
 import com.google.firebase.firestore.FieldValue
@@ -30,7 +31,15 @@ class WalletServiceImpl @Inject constructor(
         return fromMap(wallet)
     }
 
-    override suspend fun addCard(walletId: String, cardId: String) {
-        Firebase.firestore.collection("Wallets").document(walletId).update("cardIds", FieldValue.arrayUnion(cardId))
+    override suspend fun addCard(walletId: String, card: Card) {
+        val cardId = Firebase.firestore.collection("Cards").document().id
+        val cardData = hashMapOf(
+            "cardId" to cardId,
+            "cardName" to card.cardName,
+            "transactionsId" to arrayListOf<String>(),
+            "totalExpense" to card.totalExpense,
+        )
+        Firebase.firestore.collection("Wallets").document(walletId).update("cardIds", FieldValue.arrayUnion(cardId)).await()
+        Firebase.firestore.collection("Cards").document(cardId).set(cardData).await()
     }
 }

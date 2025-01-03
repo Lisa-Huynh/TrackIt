@@ -1,5 +1,6 @@
 package com.example.trackit.data.repositories
 
+import com.example.trackit.data.models.Card
 import com.example.trackit.data.models.Wallet
 import com.example.trackit.services.WalletService
 import javax.inject.Inject
@@ -17,7 +18,7 @@ class WalletRepository @Inject constructor(
         return walletService.getWallet(walletId)
     }
 
-    suspend fun addCard(walletId: String, cardId: String) {
-        walletService.addCard(walletId, cardId)
+    suspend fun addCard(walletId: String, card: Card) {
+        walletService.addCard(walletId, card)
     }
 }

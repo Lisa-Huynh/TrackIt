@@ -41,7 +41,7 @@ fun HomeScreen(
             onProfileIconClick = viewModel::onProfileIconClick,
         )
         HomeScreenContent(
-            isWalletEmpty = (wallet as? Wallet.Loaded)?.cardIds?.isEmpty() ?: true,
+            wallet = wallet,
             onWalletClick = viewModel::onWalletClick,
         )
     }
@@ -97,7 +97,7 @@ fun HomeScreenTopBar(
 
 @Composable
 fun HomeScreenContent(
-    isWalletEmpty: Boolean,
+    wallet: Wallet,
     onWalletClick: () -> Unit,
 ) {
     val modifier = Modifier.fillMaxWidth()
@@ -106,7 +106,7 @@ fun HomeScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         WalletSection(
-            isWalletEmpty,
+            wallet,
             modifier,
             onWalletClick,
         )
@@ -115,55 +115,60 @@ fun HomeScreenContent(
 
 @Composable
 fun WalletSection(
-    isWalletEmpty: Boolean,
+    wallet: Wallet,
     modifier: Modifier,
     onWalletClick: () -> Unit,
 ) {
-    if (isWalletEmpty) {
-        Box(
-            modifier = modifier
-                .padding(horizontal = 30.dp)
-                .clickable { onWalletClick.invoke() }
-                .height(200.dp)
-                .clip(shape = RoundedCornerShape(25.dp))
-                .background(color = MaterialTheme.colors.onError)
-        ) {
-            Text(
-                modifier = Modifier.align(Alignment.Center),
-                text = "Wallet is empty! Click to add a card",
-                style = TextStyle.Default,
-            )
-        }
-    } else {
-        Box(
-            modifier = modifier
-                .padding(horizontal = 50.dp)
-                .clickable { onWalletClick.invoke() }
-        ) {
-            Box(
-                modifier = modifier
-                    .padding(horizontal = 15.dp)
-                    .align(Alignment.TopCenter)
-                    .height(50.dp)
-                    .clip(shape = RoundedCornerShape(20.dp))
-                    .background(color = MaterialTheme.colors.primary)
-            )
-            Box(
-                modifier = modifier
-                    .padding(start = 10.dp, end = 10.dp, top = 7.dp)
-                    .align(Alignment.TopCenter)
-                    .height(50.dp)
-                    .clip(shape = RoundedCornerShape(20.dp))
-                    .background(color = MaterialTheme.colors.secondary)
-            )
-            Box(
-                modifier = modifier
-                    .padding(top = 20.dp)
-                    .align(Alignment.BottomCenter)
-                    .height(170.dp)
-                    .clip(shape = RoundedCornerShape(15.dp))
-                    .background(color = MaterialTheme.colors.surface),
-            )
+    when (wallet) {
+        is Wallet.Loading -> {}
+        is Wallet.Loaded -> {
+            if (wallet.cardIds.isEmpty()) {
+                Box(
+                    modifier = modifier
+                        .padding(horizontal = 30.dp)
+                        .clickable { onWalletClick.invoke() }
+                        .height(200.dp)
+                        .clip(shape = RoundedCornerShape(25.dp))
+                        .background(color = MaterialTheme.colors.onError)
+                ) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Center),
+                        text = "Wallet is empty! Click to add a card",
+                        style = TextStyle.Default,
+                    )
+                }
+            } else {
+                Box(
+                    modifier = modifier
+                        .padding(horizontal = 50.dp)
+                        .clickable { onWalletClick.invoke() }
+                ) {
+                    Box(
+                        modifier = modifier
+                            .padding(horizontal = 15.dp)
+                            .align(Alignment.TopCenter)
+                            .height(50.dp)
+                            .clip(shape = RoundedCornerShape(20.dp))
+                            .background(color = MaterialTheme.colors.primary)
+                    )
+                    Box(
+                        modifier = modifier
+                            .padding(start = 10.dp, end = 10.dp, top = 7.dp)
+                            .align(Alignment.TopCenter)
+                            .height(50.dp)
+                            .clip(shape = RoundedCornerShape(20.dp))
+                            .background(color = MaterialTheme.colors.secondary)
+                    )
+                    Box(
+                        modifier = modifier
+                            .padding(top = 20.dp)
+                            .align(Alignment.BottomCenter)
+                            .height(170.dp)
+                            .clip(shape = RoundedCornerShape(15.dp))
+                            .background(color = MaterialTheme.colors.surface),
+                    )
+                }
+            }
         }
     }
 }

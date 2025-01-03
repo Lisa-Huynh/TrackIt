@@ -29,6 +29,8 @@ class HomeViewModel @Inject constructor(
     private val _walletStream = MutableStateFlow<Wallet>(Wallet.Loading)
     val walletStream = _walletStream.asStateFlow()
 
+    private val _updateWalletStream = MutableStateFlow(false)
+
     private val formatter = getDateInstance()
     private val date = Date()
     val currentDate: String = formatter.format(date)
@@ -39,10 +41,24 @@ class HomeViewModel @Inject constructor(
             _profileStream.emit(profileRepository.getProfile(accountId))
         }
         viewModelScope.launch {
+            _updateWalletStream.collect { shouldUpdate ->
+                if (shouldUpdate) {
+                    val walletId = (_profileStream.value as? Profile.Loaded)?.walletId
+                    walletId?.let {
+                        _walletStream.emit(walletRepository.getWallet(it))
+                        _updateWalletStream.emit(false)
+                    }
+                }
+            }
+        }
+        viewModelScope.launch {
             _profileStream.collect { profile ->
                 if (profile is Profile.Loaded) {
                     val walletId = (profile as? Profile.Loaded)?.walletId
-                    walletId?.let { _walletStream.emit(walletRepository.getWallet(it)) }
+                    walletId?.let {
+                        _walletStream.emit(walletRepository.getWallet(it))
+                        _updateWalletStream.emit(true)
+                    }
                 }
             }
         }
